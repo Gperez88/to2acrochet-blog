@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://Gperez88.github.io/to2acrochet-site/sitemap.xml
