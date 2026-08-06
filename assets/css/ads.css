@@ -1,0 +1,150 @@
+/*
+ * Ads components: sticky bottom banner + floating video ad.
+ * --ads-sticky-height is kept in sync by assets/js/ads.js (0px when the
+ * banner is closed or absent) so the floating ad and the body padding
+ * always track the real banner height.
+ */
+:root {
+    --ads-sticky-height: 0px;
+}
+
+body.has-ads-sticky {
+    padding-bottom: calc(var(--ads-sticky-height) + env(safe-area-inset-bottom, 0px));
+}
+
+/* Sticky bottom banner */
+.ads-sticky {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 900; /* above header (99), below mobile menu/overlays (1000+) */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 60px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--white, #fff);
+    -webkit-box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media all and (min-width: 48em) {
+    .ads-sticky {
+        height: 100px;
+    }
+}
+
+.ads-sticky__slot {
+    width: 100%;
+    max-width: 728px;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Floating ad — above the sticky banner; docked bottom left on mobile and
+   bottom right on desktop. Sized to standard AdSense formats so real units
+   fill without clipping: 250x250 (square) mobile, 300x250 (medium
+   rectangle, video-capable) desktop. */
+.ads-floating {
+    position: fixed;
+    left: 0.75rem;
+    right: auto;
+    bottom: calc(var(--ads-sticky-height) + 0.75rem + env(safe-area-inset-bottom, 0px));
+    z-index: 901;
+    width: 250px;
+    height: 250px;
+    background: var(--white, #fff);
+    border-radius: var(--border-radius, 3px);
+    -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+}
+
+@media all and (min-width: 40em) {
+    .ads-floating {
+        left: auto;
+        right: 1rem;
+        bottom: calc(var(--ads-sticky-height) + 1rem + env(safe-area-inset-bottom, 0px));
+        width: 300px;
+        height: 250px;
+    }
+}
+
+.ads-floating__slot {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+/* Floating close — discreet tab fused to the top-right edge of the ad box
+   (anchor-ads pattern). Never overlaps the creative; closing persists for
+   the session via ads.js. */
+.ads-floating__close {
+    position: absolute;
+    top: -1.5rem;
+    right: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: none;
+    border-radius: var(--border-radius, 3px) var(--border-radius, 3px) 0 0;
+    background: var(--white, #fff);
+    color: var(--gray-2, #888);
+    font-size: 0.625rem;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.ads-floating__close:hover,
+.ads-floating__close:focus {
+    color: var(--dark, #111);
+}
+
+.ads-floating.is-closed {
+    display: none;
+}
+
+/* Placeholder mode (no AdSense approval yet) */
+.ads-placeholder {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border: 1px dashed var(--light, #d5d5d5);
+    background: var(--lighter, #f5f5f5);
+    color: var(--gray-2, #888);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.ads-sticky .adsbygoogle,
+.ads-floating .adsbygoogle {
+    width: 100%;
+    height: 100%;
+}
